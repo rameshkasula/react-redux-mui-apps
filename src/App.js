@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch, useSelector } from "react-redux";
+import { Fragment, useEffect } from "react";
+import axios from "axios";
+import ActionTypes from "./app/actions";
+import MainLayout from "./components/layout";
 
 function App() {
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state) => state.user);
+  console.log("gggggggggg", userData);
+
+  useEffect(() => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/users")
+      .then(async (res) => {
+        if (res.status === 200) {
+          await dispatch({
+            type: ActionTypes.SET_USER_DATA,
+            userData: res.data,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("gggg", error?.response?.data?.message);
+      });
+  }, [dispatch]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <MainLayout>"hello there"</MainLayout>
+    </Fragment>
   );
 }
 
