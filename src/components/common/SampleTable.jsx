@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
-import ActionTypes from "./app/actions";
-import MainLayout from "./components/layout";
-import MDataTable from "./lib/MDataTable";
 import { Button, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Page from "./components/common/Page";
+import ActionTypes from "src/app/actions";
+import MainLayout from "../layout";
+import MDataTable from "src/lib/MDataTable";
+import Page from "./Page";
 
-function App() {
+function Sampletable() {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.user);
   console.log("gggggggggg", userData);
@@ -67,24 +67,22 @@ function App() {
   ];
   return (
     <Fragment>
-      <MainLayout>
-        <Page
-          title={"Projects"}
-          action={
-            <Button
-              variant="contained"
-              //   component={Link}
-              //   to={"/projects/create"}
-            >
-              {"Create"}
-            </Button>
-          }
-        >
-          <MDataTable rows={userData} columns={columns} loading={loading} />
-        </Page>
-      </MainLayout>
+      <Page
+        title={"Projects"}
+        action={
+          <Button
+            variant="contained"
+            //   component={Link}
+            //   to={"/projects/create"}
+          >
+            {"Create"}
+          </Button>
+        }
+      >
+        <MDataTable rows={userData} columns={columns} loading={loading} />
+      </Page>
     </Fragment>
   );
 }
 
-export default App;
+export default Sampletable;
