@@ -2,7 +2,7 @@ import ActionTypes from "../actions";
 
 export const initialState = {
   isAuth: false,
-  userData: "i am make it better",
+  userData: false,
 };
 
 //-------- user reducer --------//
