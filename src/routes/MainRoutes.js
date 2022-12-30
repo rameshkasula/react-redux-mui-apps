@@ -3,24 +3,25 @@ import { Navigate } from "react-router-dom";
 import Loadable from "src/components/common/Loadable";
 import MainLayout from "src/components/layout";
 
-const Sampletable = Loadable(
-  lazy(() => import("src/components/common/SampleTable"))
-);
+// const Sampletable = Loadable(
+//   lazy(() => import("src/components/common/SampleTable"))
+// );
 const AuthSignUp = Loadable(lazy(() => import("src/pages/auth/SignUp")));
+const Posts = Loadable(lazy(() => import("src/components/posts")));
 
 const MainRoutes = {
   path: "/",
   element: <MainLayout />,
 
   children: [
-    { element: <Navigate to="/users" replace={true} /> },
+    { path: "", element: <Navigate to="/app" replace={true} /> },
+    // {
+    //   path: "",
+    //   element: <Sampletable />,
+    // },
     {
-      path: "",
-      element: <Sampletable />,
-    },
-    {
-      path: "users",
-      element: <Sampletable />,
+      path: "app",
+      element: <Posts />,
     },
 
     {
