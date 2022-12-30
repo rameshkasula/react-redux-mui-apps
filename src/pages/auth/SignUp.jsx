@@ -5,12 +5,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import AxiosClient from "src/utils/AxiosClient";
+import { useSnackbar } from "notistack";
 
 function Copyright(props) {
   return (
@@ -31,13 +33,32 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    let payload = {
       email: data.get("email"),
       password: data.get("password"),
-    });
+      fullName: data.get("fullName"),
+      userName: data.get("userName"),
+    };
+
+    AxiosClient.post("/user/register", payload)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 201) {
+          navigate("/auth/signin");
+          enqueueSnackbar("Singup Successful, Please login", {
+            variant: "success",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -59,24 +80,24 @@ export default function SignUp() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
-                autoComplete="given-name"
-                name="firstName"
-                required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                autoComplete="given-name"
+                name="fullName"
+                required
+                id="fullName"
+                label="Full Name"
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
+                id="userName"
+                label="User Name"
+                name="userName"
                 autoComplete="family-name"
               />
             </Grid>
@@ -118,9 +139,17 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Typography
+                component={Link}
+                to="/auth/signin"
+                variant="body"
+                gutterBottom
+                noWrap
+                color={"inherit"}
+                sx={{ textDecoration: "none" }}
+              >
                 Already have an account? Sign in
-              </Link>
+              </Typography>
             </Grid>
           </Grid>
         </Box>

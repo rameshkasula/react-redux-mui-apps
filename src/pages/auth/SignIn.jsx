@@ -5,13 +5,17 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import AxiosClient from "src/utils/AxiosClient";
+import { Link, useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import ActionTypes from "src/app/actions";
+import { storeInLocal } from "src/utils/Storage";
 
 function Copyright(props) {
   return (
@@ -31,16 +35,37 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
-
 export default function SignIn() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    let payload = {
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+
+    AxiosClient.post("/user/loginuser", payload)
+      .then((res) => {
+        if (res.status === 200) {
+          storeInLocal("userData", res.data.data);
+          dispatch({
+            type: ActionTypes.SET_USER_DATA,
+            userData: res.data.data,
+          });
+
+          enqueueSnackbar("Login Successful", {
+            variant: "success",
+          });
+          navigate("/app");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -95,14 +120,30 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Typography
+                component={Link}
+                to="/auth/signup"
+                variant="body"
+                gutterBottom
+                noWrap
+                color={"inherit"}
+                sx={{ textDecoration: "none" }}
+              >
                 Forgot password?
-              </Link>
+              </Typography>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Typography
+                component={Link}
+                to="/auth/signup"
+                variant="body"
+                gutterBottom
+                noWrap
+                color={"inherit"}
+                sx={{ textDecoration: "none" }}
+              >
                 {"Don't have an account? Sign Up"}
-              </Link>
+              </Typography>
             </Grid>
           </Grid>
         </Box>

@@ -4,6 +4,7 @@ import {
   ThemeProvider,
   useMediaQuery,
 } from "@mui/material";
+import { SnackbarProvider } from "notistack";
 import React, { createContext, Fragment } from "react";
 import ThemeRoutes from "./routes";
 
@@ -36,7 +37,9 @@ const App = () => {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <ThemeRoutes />
+          <SnackbarProvider maxSnack={3}>
+            <ThemeRoutes />
+          </SnackbarProvider>
         </ThemeProvider>
       </ColorModeContext.Provider>
     </Fragment>
