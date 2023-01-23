@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { BrowserRouter } from "react-router-dom";
 import Loader from "./components/common/Loader";
+import ColorContext from "./contexts/ColorContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -19,7 +20,9 @@ root.render(
     >
       <Provider store={store}>
         <BrowserRouter>
-          <App />
+          <ColorContext>
+            <App />
+          </ColorContext>
         </BrowserRouter>
       </Provider>
     </Suspense>

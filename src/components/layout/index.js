@@ -1,12 +1,14 @@
-import { Box } from "@mui/material";
 import React, { Fragment } from "react";
+import { Outlet } from "react-router-dom";
 import Header from "./Header";
 
-export default function MainLayout({ children }) {
+export default function MainLayout() {
   return (
     <Fragment>
       <Header />
-      <Box>{children}</Box>
+      <Fragment>
+        <Outlet />
+      </Fragment>
     </Fragment>
   );
 }
