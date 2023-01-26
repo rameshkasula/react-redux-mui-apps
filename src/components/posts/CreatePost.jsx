@@ -61,11 +61,7 @@ const CreatePost = () => {
                   minRows={4}
                 />
 
-                <MImageUpload
-                  label="Image"
-                  name="file"
-                  accept=".jpeg, .png, .jpg"
-                />
+                <MImageUpload label="Image" name="file" accept="image/*" />
 
                 <MEditor name={"message"} label={"Content"} />
                 <Button
