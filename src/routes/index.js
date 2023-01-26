@@ -8,6 +8,7 @@ import Posts from "src/pages/Posts";
 import CreatePost from "src/components/posts/CreatePost";
 import { RequireAuth } from "src/helpers/RequireAuth";
 import ViewPost from "src/components/posts/ViewPost";
+import Profile from "src/pages/Profile";
 
 export default function Router() {
   return useRoutes([
@@ -32,8 +33,10 @@ export default function Router() {
         </RequireAuth>
       ),
       children: [
-        { element: <Navigate to="/app" replace={true} /> },
+        { element: <Navigate to="/app" replace /> },
         { path: "app", element: <Home /> },
+        { path: "profile", element: <Profile /> },
+
         {
           path: "posts",
           children: [
@@ -44,6 +47,10 @@ export default function Router() {
           ],
         },
       ],
+    },
+    {
+      path: "/",
+      element: <Navigate to="/app" replace />,
     },
   ]);
 }

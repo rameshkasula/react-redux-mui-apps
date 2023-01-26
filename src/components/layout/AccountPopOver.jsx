@@ -2,8 +2,9 @@ import * as React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, IconButton, Typography } from "@mui/material";
 import { useAuth } from "src/contexts/authContext";
+import { Link } from "react-router-dom";
 
 export default function AccountPopOver() {
   const auth = useAuth();
@@ -43,7 +44,15 @@ export default function AccountPopOver() {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem>
+          <Typography
+            component={Link}
+            to={"/profile"}
+            sx={{ textDecoration: "none", color: "inherit" }}
+          >
+            Profile
+          </Typography>
+        </MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>

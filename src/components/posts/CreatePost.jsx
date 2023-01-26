@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CircularProgress, Container } from "@mui/material";
 import React, { Fragment } from "react";
 import MEditor from "src/lib/MEditor";
 import { useState } from "react";
@@ -17,9 +10,6 @@ import { MImageUpload, MTextField } from "src/lib";
 import { useSnackbar } from "notistack";
 
 const CreatePost = () => {
-  const [content, setContent] = useState("");
-  const [file, setFile] = useState("");
-  const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();

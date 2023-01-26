@@ -22,7 +22,16 @@ export default function Header() {
       <AppBar position="static">
         <Toolbar>
           {/* <SideBar /> */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component={Link}
+            to="/app"
+            sx={{
+              flexGrow: 1,
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
             News
           </Typography>
           {!auth?.user ? (
