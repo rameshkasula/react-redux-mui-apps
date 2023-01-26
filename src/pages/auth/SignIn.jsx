@@ -12,8 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useAuth } from "src/contexts/authContext";
-
-
+import axiosClient from "src/helpers/axiosClient";
 
 export default function SignIn() {
   const auth = useAuth();
@@ -24,7 +23,10 @@ export default function SignIn() {
       email: data.get("email"),
       password: data.get("password"),
     };
-    auth.login(payload.email);
+    axiosClient.post("/user/loginuser", payload).then((results) => {
+      console.log(results.data.data);
+      auth.login(results.data.data);
+    });
   };
 
   return (
@@ -78,7 +80,6 @@ export default function SignIn() {
             Sign In
           </Button>
           <Grid container>
-            
             <Grid item>
               <Typography
                 component={Link}

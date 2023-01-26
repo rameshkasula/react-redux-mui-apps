@@ -1,10 +1,13 @@
-import { Suspense, lazy } from "react";
+// import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import MainLayout from "../components/layout";
 import Home from "src/pages/Home";
 import SignIn from "src/pages/auth/SignIn";
 import SignUp from "src/pages/auth/SignUp";
 import Posts from "src/pages/Posts";
+import CreatePost from "src/components/posts/CreatePost";
+import { RequireAuth } from "src/helpers/RequireAuth";
+import ViewPost from "src/components/posts/ViewPost";
 
 export default function Router() {
   return useRoutes([
@@ -24,20 +27,22 @@ export default function Router() {
     {
       path: "/",
       element: (
+        <RequireAuth>
           <MainLayout />
+        </RequireAuth>
       ),
       children: [
         { element: <Navigate to="/app" replace={true} /> },
         { path: "app", element: <Home /> },
         {
-            path: "projects",
-            children: [
-              { element: <Navigate to="/posts" replace /> },
-              { path: "", element: <Posts /> },
-              //{ path: "create", element: <CreateProject /> },
-              //  { path: ":tagId", element: <TagsCreate /> },
-            ],
-          },
+          path: "posts",
+          children: [
+            { element: <Navigate to="/posts" replace /> },
+            { path: "", element: <Posts /> },
+            { path: "create", element: <CreatePost /> },
+            { path: "view", element: <ViewPost /> },
+          ],
+        },
       ],
     },
   ]);

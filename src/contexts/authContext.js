@@ -6,9 +6,15 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const findUser = JSON.parse(window.localStorage.getItem("user"));
-  const [user, setUser] = useState(findUser);
+  const [user, setUser] = useState(findUser?.token);
 
   const login = async (data) => {
+    setUser(true);
+    await window.localStorage.setItem("user", JSON.stringify(data));
+    navigate("/app");
+  };
+
+  const register = async (data) => {
     setUser(true);
     await window.localStorage.setItem("user", JSON.stringify(data));
     navigate("/app");
@@ -19,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
