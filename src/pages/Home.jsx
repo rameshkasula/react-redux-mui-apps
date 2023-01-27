@@ -17,7 +17,6 @@ const Home = () => {
     axiosClient
       .get("/posts/getall")
       .then(async (res) => {
-        console.log("response", res);
         if (res.status === 200) {
           await dispatch({
             type: ActionTypes.SET_POSTS,
