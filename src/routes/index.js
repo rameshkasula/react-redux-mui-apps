@@ -9,6 +9,7 @@ import CreatePost from "src/components/posts/CreatePost";
 import { RequireAuth } from "src/helpers/RequireAuth";
 import ViewPost from "src/components/posts/ViewPost";
 import Profile from "src/pages/Profile";
+import Account from "src/pages/Account";
 
 export default function Router() {
   return useRoutes([
@@ -36,6 +37,7 @@ export default function Router() {
         { element: <Navigate to="/app" replace /> },
         { path: "app", element: <Home /> },
         { path: "profile", element: <Profile /> },
+        { path: "account", element: <Account /> },
 
         {
           path: "posts",

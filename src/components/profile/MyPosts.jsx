@@ -1,13 +1,12 @@
-import { Box, Button, CircularProgress, Container } from "@mui/material";
-import React, { Fragment, useState } from "react";
-import { useEffect } from "react";
+import { Box, CircularProgress, Grid } from "@mui/material";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import ActionTypes from "src/app/actions";
-import PostItem from "src/components/posts/PostItem";
 import axiosClient from "src/helpers/axiosClient";
+import PostItem from "../posts/PostItem";
+import MyPostCard from "./MyPostCard";
 
-const Home = () => {
+const MyPosts = () => {
   const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
@@ -30,10 +29,11 @@ const Home = () => {
         setLoading(!true);
       });
   }, [dispatch]);
-
   return (
     <Fragment>
-      <Container component="main" maxWidth="xs">
+      {loading ? (
+        <CircularProgress />
+      ) : (
         <Box
           sx={{
             marginTop: 8,
@@ -42,26 +42,19 @@ const Home = () => {
             alignItems: "center",
           }}
         >
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            <Fragment>
-              <Button
-                variant="contained"
-                component={Link}
-                to={"/posts/create"}
-                sx={{ mb: 2 }}
-              >
-                {"Create Post"}
-              </Button>
-              {posts?.length > 0 &&
-                posts.map((item) => <PostItem data={item} key={item?._id} />)}
-            </Fragment>
-          )}
+          <Grid container rowSpacing={1} columnSpacing={1}>
+            {posts?.length > 0 &&
+              posts.map((item) => (
+                <Grid item xs={12} lg={4} md={6}>
+                  <MyPostCard data={item} key={item?._id} />
+                </Grid>
+              ))}
+          </Grid>
         </Box>
-      </Container>
+      )}
+      <Box></Box>
     </Fragment>
   );
 };
 
-export default Home;
+export default MyPosts;

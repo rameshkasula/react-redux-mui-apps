@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import SinglePostAction from "./SinglePostAction";
 
 const SinglePostData = ({ postData, handleDelete }) => {
   const findUser = JSON.parse(window.localStorage.getItem("user"));
@@ -15,7 +16,7 @@ const SinglePostData = ({ postData, handleDelete }) => {
           alignItems: "center",
         }}
       >
-        {findUser?._id !== postData?.postedBy?._id && (
+        {findUser?._id === postData?.postedBy?._id && (
           <div>
             <Button component={Link} to={`/posts/create?id=${postData?._id}`}>
               Edit
@@ -40,6 +41,7 @@ const SinglePostData = ({ postData, handleDelete }) => {
           />
         </Box>
       </Box>
+      <SinglePostAction postData={postData} />
     </Fragment>
   );
 };

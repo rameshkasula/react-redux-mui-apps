@@ -4,6 +4,7 @@ export const initialState = {
   isAuth: false,
   userData: false,
   posts: false,
+  postData: false,
 };
 
 //-------- user reducer --------//
@@ -19,6 +20,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: action.posts,
+      };
+    case ActionTypes.SET_POST_DATA:
+      return {
+        ...state,
+        postData: action.postData,
       };
     default:
       return state;

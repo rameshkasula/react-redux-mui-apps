@@ -3,16 +3,19 @@ import { useSnackbar } from "notistack";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ActionTypes from "src/app/actions";
 import axiosClient from "src/helpers/axiosClient";
 import SinglePostData from "./SinglePostData";
 
 const ViewPost = () => {
-  const [postData, setPostData] = useState();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const postId = urlParams.get("id");
+  const { postData } = useSelector((state) => state.user);
 
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -39,9 +42,13 @@ const ViewPost = () => {
     setLoading(true);
     axiosClient
       .get(`/posts/get/post?postId=${postId}`)
-      .then((results) => {
+      .then(async (results) => {
         if (results?.status === 200) {
-          setPostData(results.data?.data);
+          // setPostData(results.data?.data);
+          await dispatch({
+            type: ActionTypes.SET_POST_DATA,
+            postData: results.data.data,
+          });
         }
       })
       .catch((err) => {
@@ -50,7 +57,7 @@ const ViewPost = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [postId]);
+  }, [dispatch, postId]);
   return (
     <Container component={"main"} maxWidth={"md"}>
       <Box>
