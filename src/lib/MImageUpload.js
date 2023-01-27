@@ -1,35 +1,51 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
+import axios from "axios";
 import { useFormikContext } from "formik";
-import axiosClient from "src/helpers/axiosClient";
-import PublishIcon from "@mui/icons-material/Publish";
+import { Fragment } from "react";
 
 export default function MImageUpload({ name, ...others }) {
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, values } = useFormikContext();
   const setImageAction = async (event) => {
-    event.preventDefault();
-    const file = event.target.files[0];
+    const file = await event.target.files[0];
     const formData = new FormData();
-    formData.append("image", file, file.name);
+    await formData.append("image", file, file?.name);
+    let headers = {
+      "Content-Type": "multipart/form-data",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    };
+    const response = await axios.post(
+      process.env.NODE_ENV !== "development"
+        ? process.env.REACT_APP_BASE_URL
+        : "http://localhost:8088/api/v1/" + "/posts/imageupload",
+      formData,
+      headers
+    );
 
-    const response = await axiosClient.post("/posts/imageupload", formData);
-
-    if (response.status === 200 && response.data.data?.img) {
-      setFieldValue(name, response.data.data?.img);
+    if (response.status === 200 && response.data?.data) {
+      setFieldValue(name, response.data?.data);
     }
-    //  console.log("jjjjjj", response.data.data?.img);
   };
 
   return (
-    <Box>
-      <Button
-        type="file"
-        name="image"
-        startIcon={<PublishIcon />}
-        variant={"contained"}
-        onClick={setImageAction}
-      >
-        Upload Image
-      </Button>
-    </Box>
+    <Fragment>
+      <Box>
+        <input
+          type={"file"}
+          accept="image/*"
+          name={name}
+          onChange={setImageAction}
+        />
+      </Box>
+      {values[name] && (
+        <Box
+          component={"img"}
+          src={values[name]}
+          alt={name}
+          width={"200px"}
+          height={"200px"}
+        ></Box>
+      )}
+    </Fragment>
   );
 }

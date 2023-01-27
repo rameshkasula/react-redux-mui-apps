@@ -11,7 +11,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-
+  console.log(process.env.NODE_ENV);
   useEffect(() => {
     setLoading(true);
     axiosClient

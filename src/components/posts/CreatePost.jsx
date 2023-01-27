@@ -19,7 +19,7 @@ const CreatePost = () => {
     initialValues: {
       title: "",
       message: "",
-      file: "http://res.cloudinary.com/dwubleiau/image/upload/v1674550768/gkqnv0j7yd45tpexvokc.jpg",
+      file: "",
     },
     validationSchema: Yup.object().shape({
       title: Yup.string().trim().nullable(true).required(),
