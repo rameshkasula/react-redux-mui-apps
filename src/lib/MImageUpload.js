@@ -16,7 +16,7 @@ export default function MImageUpload({ name, ...others }) {
     };
     const response = await axios.post(
       process.env.NODE_ENV !== "development"
-        ? process.env.REACT_APP_BASE_URL
+        ? process.env.REACT_APP_BASE_URL + "/posts/imageupload"
         : "http://localhost:8088/api/v1/" + "/posts/imageupload",
       formData,
       headers
