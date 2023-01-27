@@ -1,7 +1,10 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 
-const SinglePostData = ({ postData }) => {
+const SinglePostData = ({ postData, handleDelete }) => {
+  const findUser = JSON.parse(window.localStorage.getItem("user"));
+
   return (
     <Fragment>
       <Box
@@ -12,6 +15,14 @@ const SinglePostData = ({ postData }) => {
           alignItems: "center",
         }}
       >
+        {findUser?._id !== postData?.postedBy?._id && (
+          <div>
+            <Button component={Link} to={`/posts/create?id=${postData?._id}`}>
+              Edit
+            </Button>
+            <Button onClick={() => handleDelete()}>Delete</Button>
+          </div>
+        )}
         <Typography gutterBottom variant="h3" component="div">
           {postData?.title}
         </Typography>

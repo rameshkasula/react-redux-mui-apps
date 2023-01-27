@@ -3,9 +3,10 @@ import axios from "axios";
 import { useFormikContext } from "formik";
 import { Fragment } from "react";
 
-export default function MImageUpload({ name, ...others }) {
+export default function MImageUpload({ name, setLoading, loading, ...others }) {
   const { setFieldValue, values } = useFormikContext();
   const setImageAction = async (event) => {
+    setLoading(true);
     const file = await event.target.files[0];
     const formData = new FormData();
     await formData.append("image", file, file?.name);
@@ -14,17 +15,23 @@ export default function MImageUpload({ name, ...others }) {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
     };
-    const response = await axios.post(
-      process.env.NODE_ENV !== "development"
-        ? process.env.REACT_APP_BASE_URL + "/posts/imageupload"
-        : "http://localhost:8088/api/v1/" + "/posts/imageupload",
-      formData,
-      headers
-    );
-
-    if (response.status === 200 && response.data?.data) {
-      setFieldValue(name, response.data?.data);
-    }
+    await axios
+      .post(
+        process.env.NODE_ENV !== "development"
+          ? process.env.REACT_APP_BASE_URL + "/posts/imageupload"
+          : "http://localhost:8088/api/v1/" + "/posts/imageupload",
+        formData,
+        headers
+      )
+      .then((response) => {
+        if (response.status === 200 && response.data?.data) {
+          setFieldValue(name, response.data?.data);
+        }
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (

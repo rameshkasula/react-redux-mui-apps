@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, Container } from "@mui/material";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import MEditor from "src/lib/MEditor";
 import { useState } from "react";
 import axiosClient from "src/helpers/axiosClient";
@@ -10,16 +10,40 @@ import { MImageUpload, MTextField } from "src/lib";
 import { useSnackbar } from "notistack";
 
 const CreatePost = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [postData, setPostData] = useState();
+  const [loading, setLoading] = useState(false);
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const postId = urlParams.get("id");
+
+  useEffect(() => {
+    if (postId) {
+      setLoading(true);
+
+      axiosClient
+        .get(`/posts/get/post?postId=${postId}`)
+        .then((results) => {
+          if (results?.status === 200) {
+            setPostData(results.data?.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [postId]);
 
   let formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      title: "",
-      message: "",
-      file: "",
+      title: postData?.title || "",
+      message: postData?.message || "",
+      file: postData?.file || "",
     },
     validationSchema: Yup.object().shape({
       title: Yup.string().trim().nullable(true).required(),
@@ -27,24 +51,44 @@ const CreatePost = () => {
       file: Yup.string().trim().nullable(true).required(),
     }),
     onSubmit: (values) => {
-      console.log(values);
-      setLoading(true);
-      axiosClient
-        .post("/posts/create", values)
-        .then(async (res) => {
-          if (res.status === 201) {
-            enqueueSnackbar("Post created", { variant: "success" });
-            navigate("/app");
-          }
-        })
-        .catch((error) => {
-          console.log("gggg", error?.response?.data?.message);
-        })
-        .finally(() => {
-          setLoading(!true);
-        });
+      if (postId) {
+        setLoading(true);
+        axiosClient
+          .put("/posts/update/post", { ...values, _id: postId })
+          .then(async (res) => {
+            if (res.status === 200) {
+              enqueueSnackbar("Post updated", { variant: "success" });
+              navigate("/app");
+            }
+          })
+          .catch((error) => {
+            console.log("gggg", error?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoading(!true);
+          });
+      } else {
+        setLoading(true);
+        axiosClient
+          .post("/posts/create", values)
+          .then(async (res) => {
+            if (res.status === 201) {
+              enqueueSnackbar("Post created", { variant: "success" });
+              navigate("/app");
+            }
+          })
+          .catch((error) => {
+            console.log("gggg", error?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoading(!true);
+          });
+      }
     },
   });
+
+  console.log(formik.values);
+
   return (
     <Fragment>
       <Container component="main" maxWidth="md">
@@ -61,7 +105,13 @@ const CreatePost = () => {
                   minRows={4}
                 />
 
-                <MImageUpload label="Image" name="file" accept="image/*" />
+                <MImageUpload
+                  label="Image"
+                  name="file"
+                  accept="image/*"
+                  loading={loading}
+                  setLoading={setLoading}
+                />
 
                 <MEditor name={"message"} label={"Content"} />
                 <Button
