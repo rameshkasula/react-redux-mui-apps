@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-concat */
 import { Box } from "@mui/material";
 import axios from "axios";
 import { useFormikContext } from "formik";
