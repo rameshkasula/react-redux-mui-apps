@@ -2,7 +2,7 @@ import * as React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import { Avatar, IconButton, Typography } from "@mui/material";
+import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { useAuth } from "src/contexts/authContext";
 import { Link } from "react-router-dom";
 
@@ -24,6 +24,9 @@ export default function AccountPopOver() {
 
   return (
     <div>
+      {/* <Button component={Link} to="/chat" variant="contained">
+        Chat
+      </Button> */}
       <IconButton
         onClick={handleClick}
         size="small"

@@ -5,6 +5,7 @@ export const initialState = {
   userData: false,
   posts: false,
   postData: false,
+  users: false,
 };
 
 //-------- user reducer --------//
@@ -20,6 +21,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: action.posts,
+      };
+    case ActionTypes.SET_USERS:
+      return {
+        ...state,
+        users: action.users,
       };
     case ActionTypes.SET_POST_DATA:
       return {

@@ -79,7 +79,6 @@ const SinglePostAction = ({ postData }) => {
     const { value } = e.target;
     setValue(value);
   };
-  console.log("kkkkk", postData);
   return (
     <Fragment>
       <Stack direction={"row"} spacing={2}>
@@ -124,7 +123,7 @@ const SinglePostAction = ({ postData }) => {
       <Box sx={{ marginY: 2 }}>
         {postData?.comments.length > 0 &&
           postData?.comments.map((item) => (
-            <Stack direction={"row"} spacing={1} margin={1}>
+            <Stack direction={"row"} spacing={1} margin={1} key={item?._id}>
               <div>
                 <Avatar
                   color="success"

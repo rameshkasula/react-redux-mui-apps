@@ -10,6 +10,7 @@ import { RequireAuth } from "src/helpers/RequireAuth";
 import ViewPost from "src/components/posts/ViewPost";
 import Profile from "src/pages/Profile";
 import Account from "src/pages/Account";
+import Chatpage from "src/pages/Chatpage";
 
 export default function Router() {
   return useRoutes([
@@ -38,6 +39,7 @@ export default function Router() {
         { path: "app", element: <Home /> },
         { path: "profile", element: <Profile /> },
         { path: "account", element: <Account /> },
+        { path: "chat", element: <Chatpage /> },
 
         {
           path: "posts",
