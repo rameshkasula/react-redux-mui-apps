@@ -8,7 +8,7 @@ const DEFAULT_HEADERS = {
   Accept: "application/json",
   "Content-Type": "application/json",
 };
-const token = JSON.parse(localStorage.getItem("user"));
+const token = JSON.parse(window.localStorage.getItem("user"));
 
 const newToken = token?.token;
 

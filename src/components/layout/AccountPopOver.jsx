@@ -44,20 +44,19 @@ export default function AccountPopOver() {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        {/* <MenuItem>
+        <MenuItem component={Link} to={"/profile"}>
           <Typography
-            component={Link}
-            to={"/profile"}
-            sx={{ textDecoration: "none", color: "inherit" }}
+          //   component={Link}
+          //   to={"/profile"}
+          //   sx={{ textDecoration: "none", color: "inherit" }}
           >
             Profile
           </Typography>
-        </MenuItem> */}
-        <MenuItem>
+        </MenuItem>
+        <MenuItem component={Link} to={"/account"}>
           <Typography
-            component={Link}
-            to={"/account"}
-            sx={{ textDecoration: "none", color: "inherit" }}
+
+          //  sx={{ textDecoration: "none", color: "inherit" }}
           >
             Account
           </Typography>

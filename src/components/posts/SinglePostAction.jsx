@@ -84,7 +84,14 @@ const SinglePostAction = ({ postData }) => {
     <Fragment>
       <Stack direction={"row"} spacing={2}>
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
-          <ThumbUpIcon color="inherit" onClick={() => handleLikePost()} />
+          <ThumbUpIcon
+            color={
+              postData?.likes?.map((item) => item?._id).includes(findUser?._id)
+                ? "error"
+                : "inherit"
+            }
+            onClick={() => handleLikePost()}
+          />
           <Typography>{Number(postData?.likes?.length)}</Typography>
         </Stack>
 

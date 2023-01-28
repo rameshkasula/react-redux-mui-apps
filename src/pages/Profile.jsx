@@ -16,7 +16,6 @@ const Profile = () => {
     axiosClient
       .get("/user/profile/" + findUser?._id)
       .then((results) => {
-        console.log(results.data?.data);
         if (results.status === 200) {
           setProfileData(results.data?.data);
         }
@@ -29,6 +28,23 @@ const Profile = () => {
         setLoading(false);
       });
   }, [findUser?._id]);
+
+  const handleUpdateProfile = async (values) => {
+    setLoading(true);
+    const { createdAt, email, updatedAt, ...otherData } = values;
+    axiosClient
+      .put(`/user/profile/update/${findUser?._id}`, otherData)
+      .then((respo) => {
+        console.log(respo);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <Fragment>
       <Container component={"main"} maxWidth={"md"}>
@@ -43,7 +59,14 @@ const Profile = () => {
           {!!loading ? (
             <CircularProgress />
           ) : (
-            profileData && <ProfileCard data={profileData} />
+            profileData && (
+              <ProfileCard
+                data={profileData}
+                handleUpdateProfile={handleUpdateProfile}
+                loading={loading}
+                setLoading={setLoading}
+              />
+            )
           )}
         </Box>
       </Container>

@@ -12,9 +12,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axiosClient from "src/helpers/axiosClient";
+import { useSnackbar } from "notistack";
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [loading, setLoaing] = React.useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -24,13 +28,24 @@ export default function SignUp() {
       userName: data.get("userName"),
       fullName: data.get("fullName"),
     };
+    setLoaing(true);
+    axiosClient
+      .post("/user/register", payload)
+      .then((results) => {
+        //console.log(results);
+        if (results.status === 201) {
+          enqueueSnackbar("Signup Successful", { variant: "success" });
 
-    axiosClient.post("/user/register", payload).then((results) => {
-      //console.log(results);
-      if (results.status === 201) {
-        navigate("/auth/signin");
-      }
-    });
+          navigate("/auth/signin");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        enqueueSnackbar(err?.message, { variant: "error" });
+      })
+      .finally(() => {
+        setLoaing(false);
+      });
   };
 
   return (
@@ -106,6 +121,7 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={loading}
           >
             Sign Up
           </Button>

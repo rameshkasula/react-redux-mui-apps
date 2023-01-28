@@ -37,7 +37,7 @@ export default function PostItem({ data }) {
           />
 
           <Typography gutterBottom variant="p" component="p">
-            {new Date(data?.createdAt).toLocaleString()}
+            {new Date(data?.updatedAt).toDateString()}
           </Typography>
 
           <Typography gutterBottom variant="p" component="p">

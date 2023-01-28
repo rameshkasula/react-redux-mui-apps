@@ -13,9 +13,13 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useAuth } from "src/contexts/authContext";
 import axiosClient from "src/helpers/axiosClient";
+import { useSnackbar } from "notistack";
 
 export default function SignIn() {
   const auth = useAuth();
+  const [loading, setLoading] = React.useState(!true);
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -23,10 +27,21 @@ export default function SignIn() {
       email: data.get("email"),
       password: data.get("password"),
     };
-    axiosClient.post("/user/loginuser", payload).then((results) => {
-      console.log(results.data.data);
-      auth.login(results.data.data);
-    });
+    setLoading(true);
+    axiosClient
+      .post("/user/loginuser", payload)
+      .then((results) => {
+        enqueueSnackbar("Login Successful", { variant: "success" });
+
+        auth.login(results.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        enqueueSnackbar(err?.message, { variant: "error" });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -76,6 +91,7 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={loading}
           >
             Sign In
           </Button>

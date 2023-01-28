@@ -32,7 +32,7 @@ export default function Header() {
               color: "inherit",
             }}
           >
-            News
+            Blogify
           </Typography>
           {!auth?.user ? (
             <Button component={Link} to="/auth/signin" variant="contained">

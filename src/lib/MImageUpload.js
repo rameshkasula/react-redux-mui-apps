@@ -1,11 +1,13 @@
 /* eslint-disable no-useless-concat */
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import axios from "axios";
 import { useFormikContext } from "formik";
 import { Fragment } from "react";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
 
-export default function MImageUpload({ name, setLoading, loading, ...others }) {
+export default function MImageUpload({ name, setLoading }) {
   const { setFieldValue, values } = useFormikContext();
+
   const setImageAction = async (event) => {
     setLoading(true);
     const file = await event.target.files[0];
@@ -24,9 +26,10 @@ export default function MImageUpload({ name, setLoading, loading, ...others }) {
         formData,
         headers
       )
-      .then((response) => {
+      .then(async (response) => {
         if (response.status === 200 && response.data?.data) {
           setFieldValue(name, response.data?.data);
+          // console.log("nnnn", response, response.data?.data);
         }
       })
       .catch((err) => {})
@@ -37,14 +40,6 @@ export default function MImageUpload({ name, setLoading, loading, ...others }) {
 
   return (
     <Fragment>
-      <Box>
-        <input
-          type={"file"}
-          accept="image/*"
-          name={name}
-          onChange={setImageAction}
-        />
-      </Box>
       {values[name] && (
         <Box
           component={"img"}
@@ -54,6 +49,22 @@ export default function MImageUpload({ name, setLoading, loading, ...others }) {
           height={"200px"}
         ></Box>
       )}
+      <Box>
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="label"
+        >
+          <input
+            hidden
+            type={"file"}
+            accept="image/*"
+            name={name}
+            onChange={setImageAction}
+          />
+          <PhotoCamera />
+        </IconButton>
+      </Box>
     </Fragment>
   );
 }
