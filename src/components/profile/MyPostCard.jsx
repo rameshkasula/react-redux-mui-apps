@@ -11,7 +11,7 @@ import { Stack } from "@mui/material";
 
 export default function MediaCard({ data }) {
   return (
-    <Card>
+    <Card sx={{ marginX: 1 }}>
       <CardMedia sx={{ height: 140 }} image={data?.file} title={data?.title} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

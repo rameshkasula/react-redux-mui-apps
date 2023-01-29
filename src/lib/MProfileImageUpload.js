@@ -6,7 +6,7 @@ import { Fragment } from "react";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 // import { CloudinaryContext, Image } from "cloudinary-react";
 
-export default function MImageUpload({ name, setLoading }) {
+export default function MProfileImageUpload({ name, setLoading }) {
   const { setFieldValue, values } = useFormikContext();
 
   const setImageAction = async (event) => {
@@ -23,8 +23,10 @@ export default function MImageUpload({ name, setLoading }) {
     })
       .then((resp) => resp.json())
       .then(async (data) => {
-        console.log(data.url);
-        await setFieldValue(name, data?.url);
+        //   console.log(data.url);
+        await setFieldValue("profile_image", data?.url);
+        // setValues({ ...values, profile_image: data?.url });
+        // console.log(values);
       })
       .catch((err) => console.log(err))
       .finally(() => {

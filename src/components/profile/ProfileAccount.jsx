@@ -36,7 +36,14 @@ export default function ProfileAccount({ data }) {
         {"My Posts"}
       </Typography>
       <CssBaseline />
-      <Box>
+      <Box
+        sx={{
+          marginY: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <MyPosts />
       </Box>
     </Card>

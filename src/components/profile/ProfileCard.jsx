@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import * as Yup from "yup";
 import { Button, Card } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
-import { MImageUpload, MTextField } from "src/lib";
+import { MProfileImageUpload, MTextField } from "src/lib";
 
 export default function ProfileCard({
   data,
@@ -44,9 +44,9 @@ export default function ProfileCard({
         }}
       >
         <FormikProvider value={formik}>
-          <MImageUpload
-            label="Image"
+          <MProfileImageUpload
             name={"profile_image"}
+            label="Image"
             accept="image/*"
             loading={loading}
             setLoading={setLoading}

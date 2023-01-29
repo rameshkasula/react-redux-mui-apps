@@ -48,21 +48,10 @@ export default function AccountPopOver() {
         TransitionComponent={Fade}
       >
         <MenuItem component={Link} to={"/profile"}>
-          <Typography
-          //   component={Link}
-          //   to={"/profile"}
-          //   sx={{ textDecoration: "none", color: "inherit" }}
-          >
-            Profile
-          </Typography>
+          Profile
         </MenuItem>
         <MenuItem component={Link} to={"/account"}>
-          <Typography
-
-          //  sx={{ textDecoration: "none", color: "inherit" }}
-          >
-            Account
-          </Typography>
+          Account
         </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
