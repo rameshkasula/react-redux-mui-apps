@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(findUser?.token);
 
   const login = async (data) => {
-    setUser(true);
+    setUser(data?.token);
     await window.localStorage.setItem("user", JSON.stringify(data));
     navigate("/app");
   };
