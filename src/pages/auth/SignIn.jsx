@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -14,11 +14,17 @@ import Container from "@mui/material/Container";
 import { useAuth } from "src/contexts/authContext";
 import axiosClient from "src/helpers/axiosClient";
 import { useSnackbar } from "notistack";
+import { useDispatch, useSelector } from "react-redux";
+import ActionTypes from "src/app/actions";
 
 export default function SignIn() {
-  const auth = useAuth();
   const [loading, setLoading] = React.useState(!true);
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+
+  console.log("ttttttttttt", user);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,11 +35,16 @@ export default function SignIn() {
     };
     setLoading(true);
     axiosClient
-      .post("/user/loginuser", payload)
+      .post("/users/login", payload)
       .then((results) => {
-        enqueueSnackbar("Login Successful", { variant: "success" });
-
-        auth.login(results.data.data);
+        console.log("ddddddd", results);
+        dispatch({
+          type: ActionTypes.SET_USER_DATA,
+          userData: { email: payload?.email },
+        });
+        enqueueSnackbar(results?.data?.message, { variant: "success" });
+        navigate(`/auth/otp?email=${payload.email}`);
+        // auth.login(results.data);
       })
       .catch((err) => {
         console.log(err);

@@ -11,6 +11,7 @@ import ViewPost from "src/components/posts/ViewPost";
 import Profile from "src/pages/Profile";
 import Account from "src/pages/Account";
 import Chatpage from "src/pages/Chatpage";
+import OTPpage from "src/pages/auth/OTPpage";
 
 export default function Router() {
   return useRoutes([
@@ -24,6 +25,10 @@ export default function Router() {
         {
           path: "signup",
           element: <SignUp />,
+        },
+        {
+          path: "otp",
+          element: <OTPpage />,
         },
       ],
     },

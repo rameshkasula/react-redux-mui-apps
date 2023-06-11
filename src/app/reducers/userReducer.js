@@ -1,8 +1,8 @@
 import ActionTypes from "../actions";
 
 export const initialState = {
-  isAuth: false,
-  userData: false,
+  isAuth: window.localStorage.getItem("user")?.token?.length ?? false,
+  userData: window.localStorage.getItem("user") ?? false,
   posts: false,
   postData: false,
   users: false,

@@ -25,12 +25,11 @@ export default function SignUp() {
     let payload = {
       email: data.get("email"),
       password: data.get("password"),
-      userName: data.get("userName"),
-      fullName: data.get("fullName"),
+      name: data.get("fullName"),
     };
     setLoaing(true);
     axiosClient
-      .post("/user/register", payload)
+      .post("/users/signup", payload)
       .then((results) => {
         //console.log(results);
         if (results.status === 201) {
@@ -78,16 +77,7 @@ export default function SignUp() {
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="userName"
-                label="User Name"
-                name="userName"
-                autoComplete="family-name"
-              />
-            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 required

@@ -1,16 +1,25 @@
+import { useEffect } from "react";
 import { useState, createContext, useContext } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ActionTypes from "src/app/actions";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
-  const findUser = JSON.parse(window.localStorage.getItem("user"));
-  const [user, setUser] = useState(findUser?.token);
+  const [user, setUser] = useState(false);
+
+  useEffect(() => {
+    const findUser = JSON.parse(window.localStorage.getItem("user"));
+    if (findUser?.token) {
+      setUser(findUser?.token);
+    }
+  }, []);
 
   const login = async (data) => {
     setUser(data?.token);
-    await window.localStorage.setItem("user", JSON.stringify(data));
+    window.localStorage.setItem("user", JSON.stringify(data));
     navigate("/app");
   };
 
@@ -19,6 +28,7 @@ export const AuthProvider = ({ children }) => {
     await window.localStorage.setItem("user", JSON.stringify(data));
     navigate("/app");
   };
+
   const logout = async () => {
     await window.localStorage.removeItem("user");
     setUser(null);
